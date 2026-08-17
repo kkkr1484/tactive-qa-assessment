@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LibraryOS — AI-Powered QA & Engineering Presentation</title>
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --card: #161a22;
+      --accent: #f59e0b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: rgba(255,255,255,0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .slide-deck {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .slide {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .slide-title { font-size: 1.8rem; color: var(--accent); }
+    .slide-num { font-size: 0.9rem; color: var(--muted); font-weight: 600; }
+    .slide-content { flex: 1; font-size: 1.1rem; line-height: 1.7; color: var(--text); }
+    ul { margin-left: 24px; margin-top: 12px; }
+    li { margin-bottom: 12px; }
+    .slide-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .highlight-box {
+      background: rgba(245, 158, 11, 0.1);
+      border-left: 4px solid var(--accent);
+      padding: 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    .badge {
+      display: inline-block;
+      background: #22c55e;
+      color: #000;
+      font-weight: bold;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+    @media print {
+      body { background: white; color: black; }
+      .slide { page-break-after: always; box-shadow: none; border: 1px solid #ccc; background: white; color: black; }
+      .slide-title { color: #d97706; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="slide-deck">
+
+  <!-- Slide 1 -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">LibraryOS 📚</div>
+      <div class="slide-num">Slide 1 / 6</div>
+    </div>
+    <div class="slide-content">
+      <h2 style="font-size: 2.2rem; margin-bottom: 12px;">AI-Powered QA Automation & Engineering Assessment</h2>
+      <p style="color: var(--muted); font-size: 1.2rem; margin-bottom: 24px;">Tactive Internship Assessment | Duration: 1 Week</p>
+      
+      <div class="highlight-box">
+        <strong>Goal:</strong> Design and build a resilient web application, automate comprehensive test suites with deliberate regression checks, and orchestrate an autonomous AI build → test → fix loop.
+      </div>
+      <p><strong>Stack:</strong> Next.js 16 (App Router) + Prisma v7 ORM + SQLite + NextAuth.js + Playwright E2E</p>
+    </div>
+    <div class="slide-footer">
+      <span>Tactive Assessment</span>
+      <span>Overview & Introduction</span>
+    </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Problem Statement & Scope</div>
+      <div class="slide-num">Slide 2 / 6</div>
+    </div>
+    <div class="slide-content">
+      <h3>Domain: Library Book Issuance & Return Management</h3>
+      <ul>
+        <li><strong>Why this scenario:</strong> Rich domain rules, multi-entity relationships (Books, Members, Issuances, Holds), and strict boundary edge cases.</li>
+        <li><strong>Core Deep Feature:</strong>
+          <ul>
+            <li>Librarian-authenticated book issue & return workflows</li>
+            <li>Enforcement of 3-book concurrent quota per member</li>
+            <li>Membership validity & deactivation checks</li>
+            <li>Automated overdue fine computation (₹2/day overdue)</li>
+            <li>ACID-compliant atomic inventory updates via Prisma transactions</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="slide-footer">
+      <span>Tactive Assessment</span>
+      <span>Stage 1: Architecture & Scope</span>
+    </div>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">System Architecture & Engineering Judgement</div>
+      <div class="slide-num">Slide 3 / 6</div>
+    </div>
+    <div class="slide-content">
+      <ul>
+        <li><strong>Zero-Dependency Assessor UX:</strong> Portable SQLite database with <code>@prisma/adapter-better-sqlite3</code> driver adapter—clones and boots instantly without external Docker or cloud DB setup.</li>
+        <li><strong>Pure Functional Business Logic:</strong> <code>lib/fine-calculator.ts</code> isolates fine calculation and loan periods from HTTP/database side effects.</li>
+        <li><strong>Defense in Depth (15% Security Weight):</strong>
+          <ul>
+            <li>NextAuth.js session verification at route handler boundaries (401 on unauthorized)</li>
+            <li>Runtime schema validation with Zod (400 on malformed payload)</li>
+            <li>Parameterized queries via Prisma (immune to SQL injection)</li>
+            <li>bcryptjs salted hashing for credential storage</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="slide-footer">
+      <span>Tactive Assessment</span>
+      <span>Stage 1: Technical Decisions</span>
+    </div>
+  </div>
+
+  <!-- Slide 4 -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Stage 2: Test Automation & The Red Run</div>
+      <div class="slide-num">Slide 4 / 6</div>
+    </div>
+    <div class="slide-content">
+      <p>A test suite that always passes proves nothing. We engineered 12 comprehensive Playwright E2E tests with automated DB re-seeding.</p>
+      
+      <div class="highlight-box">
+        <strong>🟢 Baseline Green Run:</strong> 12/12 passing (1.3m execution) covering normal paths, edge cases, quota limits, and 401/400 security guards.
+      </div>
+
+      <div class="highlight-box" style="background: rgba(239, 68, 68, 0.1); border-left-color: #ef4444;">
+        <strong>🔴 Deliberate Red Run:</strong> Injected boundary flaw in <code>app/api/books/issue/route.ts</code> (<code>available &lt; 0</code> instead of <code>&lt;= 0</code>).<br>
+        <strong>Caught immediately by TC-02</strong> (expected <code>"No copies available"</code>, caught invalid issuance). Verified via <code>scripts/break-and-test.js</code>.
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Tactive Assessment</span>
+      <span>Stage 2: Playwright Verification</span>
+    </div>
+  </div>
+
+  <!-- Slide 5 -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Stage 3: The AI Change Loop</div>
+      <div class="slide-num">Slide 5 / 6</div>
+    </div>
+    <div class="slide-content">
+      <h3>Autonomous Feature Delivery: Holds Queue</h3>
+      <p>Automated build → test → diagnostic failure feedback → fix orchestration via <code>scripts/ai-loop.sh</code>.</p>
+      <ul>
+        <li><strong>Prompt Directive:</strong> Ingests schema, API routes, and Playwright JSON failure output into the LLM.</li>
+        <li><strong>Iteration 1:</strong> AI implemented <code>POST /api/books/hold</code>; initial return logic broke unreserved book return test (TC-12).</li>
+        <li><strong>Iteration 2 (Self-Correction):</strong> AI analyzed failure JSON, adjusted conditional hold reservation vs. general availability increment, and restored 100% test pass rate.</li>
+        <li><strong>Loop Closure:</strong> Fully automated and captured in <code>evidence/loop-log.md</code>.</li>
+      </ul>
+    </div>
+    <div class="slide-footer">
+      <span>Tactive Assessment</span>
+      <span>Stage 3: Autonomous AI Loop</span>
+    </div>
+  </div>
+
+  <!-- Slide 6 -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Deliverables & Summary</div>
+      <div class="slide-num">Slide 6 / 6</div>
+    </div>
+    <div class="slide-content">
+      <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
+        <thead>
+          <tr style="border-bottom: 2px solid var(--border); text-align: left;">
+            <th style="padding: 8px;">#</th>
+            <th style="padding: 8px;">Deliverable</th>
+            <th style="padding: 8px;">Format / Location</th>
+            <th style="padding: 8px;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 8px;">1</td>
+            <td style="padding: 8px;">Source Code & README</td>
+            <td style="padding: 8px;"><code>README.md</code>, Next.js repository</td>
+            <td style="padding: 8px;"><span class="badge">Complete</span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 8px;">2</td>
+            <td style="padding: 8px;">Test Suite + Green & Red Runs</td>
+            <td style="padding: 8px;"><code>tests/e2e/</code>, <code>evidence/*.json</code></td>
+            <td style="padding: 8px;"><span class="badge">Complete</span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 8px;">3</td>
+            <td style="padding: 8px;">AI Change Loop Evidence Log</td>
+            <td style="padding: 8px;"><code>evidence/loop-log.md</code></td>
+            <td style="padding: 8px;"><span class="badge">Complete</span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 8px;">4</td>
+            <td style="padding: 8px;">Architecture, Design & User Guide</td>
+            <td style="padding: 8px;"><code>docs/*.md</code></td>
+            <td style="padding: 8px;"><span class="badge">Complete</span></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 8px;">5</td>
+            <td style="padding: 8px;">Presentation Deck</td>
+            <td style="padding: 8px;"><code>docs/presentation.html</code></td>
+            <td style="padding: 8px;"><span class="badge">Complete</span></td>
+          </tr>
+          <tr>
+            <td style="padding: 8px;">6</td>
+            <td style="padding: 8px;">5-Minute Video Recording Guide</td>
+            <td style="padding: 8px;">Ready for Loom/OBS recording</td>
+            <td style="padding: 8px;"><span class="badge">Ready</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide-footer">
+      <span>Tactive Assessment</span>
+      <span>Conclusion & Deliverables</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

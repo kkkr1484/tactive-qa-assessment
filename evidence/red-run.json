@@ -1,0 +1,24 @@
+{
+  "stats": {
+    "startTime": "2026-08-16T09:04:29.627Z",
+    "duration": 77807.935,
+    "expected": 11,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "deliberateBug": {
+    "file": "app/api/books/issue/route.ts",
+    "change": "Replaced `if (book.available <= 0)` with `if (book.available < 0)`",
+    "intendedEffect": "Allows books with 0 available copies to bypass the availability check"
+  },
+  "failingTest": {
+    "title": "TC-02: Edge case — cannot issue a book with 0 available copies (Design Patterns)",
+    "file": "tests/e2e/issue.spec.ts",
+    "status": "failed",
+    "expectedStatus": "passed",
+    "error": "Error: expect(received).toContain(expected)\nExpected substring: \"No copies available\"\nReceived string: \"Member already has this book issued.\""
+  },
+  "passingTestsCount": 11,
+  "summary": "Verified that test suite reliably catches logic errors and regressions (Red Run confirmed)."
+}

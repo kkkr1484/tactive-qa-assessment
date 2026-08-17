@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("LIBRARIAN")
+  createdAt DateTime @default(now())
+}
+
+model Member {
+  id            String     @id @default(cuid())
+  name          String
+  email         String     @unique
+  phone         String?
+  membershipEnd DateTime
+  maxBooks      Int        @default(3)
+  isActive      Boolean    @default(true)
+  issuances     Issuance[]
+  holds         Hold[]
+  createdAt     DateTime   @default(now())
+}
+
+model Book {
+  id          String     @id @default(cuid())
+  title       String
+  author      String
+  isbn        String     @unique
+  totalCopies Int
+  available   Int
+  issuances   Issuance[]
+  holds       Hold[]
+  createdAt   DateTime   @default(now())
+}
+
+model Issuance {
+  id         String        @id @default(cuid())
+  book       Book          @relation(fields: [bookId], references: [id])
+  bookId     String
+  member     Member        @relation(fields: [memberId], references: [id])
+  memberId   String
+  issuedAt   DateTime      @default(now())
+  dueDate    DateTime
+  returnedAt DateTime?
+  fine       Float?
+  status     IssuanceStatus @default(ACTIVE)
+  createdAt  DateTime      @default(now())
+}
+
+enum IssuanceStatus {
+  ACTIVE
+  RETURNED
+  OVERDUE
+}
+
+model Hold {
+  id        String   @id @default(cuid())
+  book      Book     @relation(fields: [bookId], references: [id])
+  bookId    String
+  member    Member   @relation(fields: [memberId], references: [id])
+  memberId  String
+  placedAt  DateTime @default(now())
+  expiresAt DateTime?
+  status    HoldStatus @default(WAITING)
+}
+
+enum HoldStatus {
+  WAITING
+  READY
+  EXPIRED
+  CANCELLED
+}
